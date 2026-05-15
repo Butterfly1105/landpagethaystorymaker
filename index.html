@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storymaker | Cobertura Digital para Eventos</title>
+    <meta name="description" content="Cobertura digital para casamentos, 15 anos e eventos corporativos. Conteúdo que fica nas redes com a qualidade que o momento merece.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --gold:        #c9a96e;
+            --gold-light:  #e2c48a;
+            --black:       #080808;
+            --dark:        #0f0f0f;
+            --card:        #141414;
+            --card-border: rgba(201,169,110,0.14);
+            --text:        #f0f0f0;
+            --muted:       #888;
+            --dim:         #444;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            line-height: 1.75;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            line-height: 1.1;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section { padding: 120px 0; }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.8rem 2.5rem;
+            transition: background .4s, padding .4s, border .4s;
+        }
+        nav.scrolled {
+            background: rgba(8,8,8,.97);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 1rem 2.5rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: .02em;
+            flex-shrink: 0;
+        }
+        .logo span { color: var(--gold); }
+        .nav-cta {
+            background: var(--gold);
+            color: var(--black);
+            padding: .65rem 1.5rem;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background .2s, transform .2s;
+        }
+        .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+        /* HERO */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: 0;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('001.JPEG') center 25% / cover no-repeat;
+            transform: scale(1.06);
+            transition: transform 7s ease;
+            will-change: transform;
+        }
+        .hero-bg.loaded { transform: scale(1); }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(130deg,
+                rgba(8,8,8,.92) 0%,
+                rgba(8,8,8,.62) 55%,
+                rgba(8,8,8,.82) 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 860px;
+            padding: 0 2rem;
+            margin-left: max(2rem, calc((100vw - 1180px) / 2 + 2rem));
+        }
+        .hero-eyebrow {
+            display: inline-block;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp .8s .3s forwards;
+        }
+        .hero-title {
+            font-size: clamp(2.6rem, 5.5vw, 5rem);
+            font-weight: 900;
+            line-height: 1.07;
+            margin-bottom: 1.8rem;
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp .9s .5s forwards;
+        }
+        .hero-title em { font-style: italic; color: var(--gold); }
+        .hero-sub {
+            font-size: clamp(.95rem, 2vw, 1.1rem);
+            font-weight: 300;
+            color: rgba(240,240,240,.72);
+            max-width: 520px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp .8s .7s forwards;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp .8s .9s forwards;
+        }
+        .scroll-line-wrap {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeUp .7s 1.4s forwards;
+        }
+        .scroll-line {
+            width: 1px;
+            height: 52px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: pulse 2.2s ease-in-out infinite;
+        }
+
+        /* BUTTONS */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            background: var(--gold);
+            color: var(--black);
+            padding: 1rem 2.2rem;
+            font-size: .86rem;
+            font-weight: 600;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background .25s, transform .25s, box-shadow .25s;
+        }
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 36px rgba(201,169,110,.28);
+        }
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            background: transparent;
+            color: var(--text);
+            padding: 1rem 1.8rem;
+            font-size: .86rem;
+            letter-spacing: .04em;
+            text-decoration: none;
+            border: 1px solid rgba(240,240,240,.22);
+            transition: border-color .25s, color .25s;
+        }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+        .h-line {
+            width: 44px;
+            height: 2px;
+            background: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        /* HOOK */
+        #hook {
+            background: var(--dark);
+            padding: 100px 0;
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+        }
+        .hook-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 7rem;
+            align-items: center;
+        }
+        .stat-group { display: flex; flex-direction: column; gap: 3rem; }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: .35rem;
+        }
+        .stat-label { font-size: .86rem; color: var(--muted); max-width: 280px; }
+
+        /* SERVICES */
+        .section-head {
+            text-align: center;
+            margin-bottom: 4.5rem;
+        }
+        .section-head h2 {
+            font-size: clamp(1.9rem, 3.8vw, 3rem);
+            font-weight: 700;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .section-head p { color: var(--muted); max-width: 460px; margin: 0 auto; font-size: .98rem; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--card-border);
+        }
+        .service-card {
+            background: var(--card);
+            padding: 3rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: background .3s;
+        }
+        .service-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s ease;
+        }
+        .service-card:hover::after { transform: scaleX(1); }
+        .service-card:hover { background: #181818; }
+        .svc-num {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: .7rem;
+            color: var(--dim);
+            letter-spacing: .18em;
+            margin-bottom: 1.2rem;
+        }
+        .service-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .service-card > p { font-size: .9rem; color: var(--muted); line-height: 1.85; }
+        .svc-list { list-style: none; margin-top: 1.8rem; }
+        .svc-list li {
+            font-size: .84rem;
+            color: var(--muted);
+            padding: .45rem 0;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+        }
+        .svc-list li::before {
+            content: '';
+            width: 4px; height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* PROCESS */
+        #process {
+            background: var(--dark);
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+        }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin-top: 4.5rem;
+        }
+        .step {
+            padding: 2.5rem 2rem;
+            border-right: 1px solid var(--card-border);
+        }
+        .step:last-child { border-right: none; }
+        .step-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: rgba(201,169,110,.12);
+            line-height: 1;
+            margin-bottom: 1.6rem;
+        }
+        .step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .8rem; }
+        .step p { font-size: .86rem; color: var(--muted); line-height: 1.85; }
+
+        /* PORTFOLIO */
+        .portfolio-intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: end;
+            margin-bottom: 4rem;
+        }
+        .portfolio-intro h2 { font-size: clamp(2rem, 3.4vw, 2.8rem); }
+        .portfolio-intro h2 em { font-style: italic; color: var(--gold); }
+        .portfolio-intro p { color: var(--muted); font-size: .96rem; }
+
+        /* Portrait video grid — 4 colunas */
+        .video-portrait-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .video-portrait-item {
+            position: relative;
+            aspect-ratio: 9 / 16;
+            background: #111;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        .video-portrait-item iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .photo-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .photo-wrap {
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+        .photo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            transition: transform .6s ease;
+        }
+        .photo-wrap:hover img { transform: scale(1.06); }
+
+        /* WHO */
+        #who {
+            background: var(--dark);
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+            padding: 100px 0;
+        }
+        .who-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 6rem;
+            align-items: center;
+        }
+        .who-img-wrap { position: relative; }
+        .who-img-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -14px;
+            border: 1px solid var(--card-border);
+            z-index: 0;
+        }
+        .who-img-wrap img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            border: 1px solid var(--card-border);
+        }
+        .who-text .eyebrow { display: block; margin-bottom: 1.2rem; }
+        .who-text h2 { font-size: clamp(1.9rem, 3vw, 2.6rem); margin-bottom: 1.5rem; }
+        .who-text h2 em { color: var(--gold); font-style: italic; }
+        .who-text p { color: var(--muted); font-size: .96rem; margin-bottom: 1rem; }
+
+        /* TESTIMONIALS — screenshots reais */
+        .testi-screenshots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-top: 4rem;
+        }
+        .testi-shot {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            background: #111;
+            box-shadow: 0 8px 40px rgba(0,0,0,.55);
+            transition: transform .4s ease, box-shadow .4s ease;
+        }
+        .testi-shot:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 56px rgba(0,0,0,.7);
+        }
+        .testi-shot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+        }
+
+        /* FINAL CTA */
+        #cta-final {
+            position: relative;
+            padding: 150px 0;
+            text-align: center;
+            overflow: hidden;
+        }
+        .cta-bg {
+            position: absolute;
+            inset: 0;
+            background: url('002.JPEG') center / cover no-repeat;
+        }
+        .cta-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(8,8,8,.88);
+        }
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .cta-content .eyebrow { display: block; margin-bottom: 1.6rem; }
+        .cta-content h2 {
+            font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+            margin-bottom: 1.2rem;
+        }
+        .cta-content h2 em { color: var(--gold); font-style: italic; }
+        .cta-content p { color: var(--muted); font-size: 1.05rem; margin-bottom: 2.5rem; }
+
+        /* FOOTER */
+        footer {
+            background: #060606;
+            border-top: 1px solid var(--card-border);
+            padding: 3rem 0;
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+        .footer-logo span { color: var(--gold); }
+        .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .footer-links a {
+            font-size: .8rem;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: .05em;
+            transition: color .2s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-copy { font-size: .76rem; color: var(--dim); }
+
+        /* WA FLOAT */
+        .wa-float {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            width: 56px; height: 56px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 999;
+            box-shadow: 0 4px 22px rgba(37,211,102,.3);
+            text-decoration: none;
+            transition: transform .3s, box-shadow .3s;
+        }
+        .wa-float:hover { transform: translateY(-3px) scale(1.06); box-shadow: 0 8px 32px rgba(37,211,102,.5); }
+        .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+        /* KEYFRAMES */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%,100% { opacity: 1; }
+            50%      { opacity: .25; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .video-portrait-grid { grid-template-columns: repeat(4, 1fr); gap: .8rem; }
+            .testi-screenshots    { grid-template-columns: repeat(4, 1fr); gap: .8rem; }
+        }
+
+        @media (max-width: 1024px) {
+            .hook-grid       { grid-template-columns: 1fr; gap: 3.5rem; }
+            .services-grid   { grid-template-columns: 1fr 1fr; }
+            .steps           { grid-template-columns: 1fr 1fr; }
+            .step            { border-right: none; border-bottom: 1px solid var(--card-border); }
+            .step:nth-child(odd) { border-right: 1px solid var(--card-border); }
+            .step:nth-child(2)   { border-right: none; }
+            .who-grid        { grid-template-columns: 1fr; gap: 3rem; }
+            .who-img-wrap    { max-width: 380px; }
+            .portfolio-intro { grid-template-columns: 1fr; gap: 2rem; }
+            .video-portrait-grid { grid-template-columns: repeat(2, 1fr); }
+            .testi-screenshots   { grid-template-columns: repeat(2, 1fr); }
+            .photo-row           { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 72px 0; }
+            #hook   { padding: 72px 0; }
+            #who    { padding: 72px 0; }
+
+            nav { padding: 1rem 1.2rem; }
+            nav.scrolled { padding: .8rem 1.2rem; }
+            .logo { font-size: 1.3rem; }
+            .nav-cta { padding: .55rem 1rem; font-size: .7rem; letter-spacing: .06em; }
+
+            .hero-content  { margin-left: 0; padding: 0 1.5rem; }
+            .hero-title    { font-size: clamp(2.2rem, 8vw, 3.2rem); }
+            .hero-sub      { font-size: .95rem; }
+            .hero-cta      { gap: .75rem; }
+            .btn-ghost     { display: none; }
+
+            .stat-group    { flex-direction: row; flex-wrap: wrap; gap: 2rem; }
+
+            .services-grid { grid-template-columns: 1fr; }
+            .steps         { grid-template-columns: 1fr; }
+            .step          { border-right: none; border-bottom: 1px solid var(--card-border); }
+            .step:nth-child(odd) { border-right: none; }
+
+            .video-portrait-grid { grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+            .testi-screenshots   { grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+            .photo-row           { grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+
+            .who-img-wrap { max-width: 300px; }
+            .who-img-wrap::before { display: none; }
+
+            .footer-inner  { flex-direction: column; text-align: center; }
+            .footer-links  { justify-content: center; }
+
+            .wa-float { width: 50px; height: 50px; bottom: 1.5rem; right: 1.5rem; }
+            .wa-float svg { width: 24px; height: 24px; }
+        }
+
+        @media (max-width: 480px) {
+            section { padding: 60px 0; }
+            .container { padding: 0 1.2rem; }
+            .hero-title { font-size: 2.1rem; }
+            .hero-content { padding: 0 1.2rem; }
+            .btn-primary { padding: .85rem 1.6rem; font-size: .8rem; }
+            .section-head h2 { font-size: 1.8rem; }
+            .video-portrait-grid { gap: .5rem; }
+            .testi-screenshots   { gap: .5rem; }
+            .photo-row { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5548999808151" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav id="navbar">
+    <a href="#" class="logo">Story<span>maker</span></a>
+    <a href="https://wa.me/5548999808151" class="nav-cta" target="_blank" rel="noopener">Falar com a Thay</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <span class="eyebrow hero-eyebrow">Cobertura Digital para Eventos</span>
+        <h1 class="hero-title">
+            Seu evento vai<br>
+            acontecer uma vez.<br>
+            <em>O que resta</em> é você<br>
+            quem decide.
+        </h1>
+        <p class="hero-sub">
+            Cobertura digital para casamentos, 15 anos e eventos corporativos.
+            Conteúdo que chega nas redes com a qualidade que o momento merece.
+        </p>
+        <div class="hero-cta">
+            <a href="https://wa.me/5548999808151" class="btn-primary" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Quero minha cobertura
+            </a>
+            <a href="#portfolio" class="btn-ghost">Ver coberturas →</a>
+        </div>
+    </div>
+    <div class="scroll-line-wrap">
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- HOOK / PROBLEMA -->
+<section id="hook">
+    <div class="container">
+        <div class="hook-grid">
+            <div class="stat-group" data-aos="fade-right">
+                <div>
+                    <div class="stat-number">72h</div>
+                    <div class="stat-label">é quanto um post tem de vida orgânica nas redes antes de sumir do alcance das pessoas</div>
+                </div>
+                <div>
+                    <div class="stat-number">90%</div>
+                    <div class="stat-label">dos convidados acessam fotos e vídeos pelo celular nas primeiras 24h após o evento</div>
+                </div>
+                <div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">memórias sobrevivem sem intenção. O que não é registrado direito, some.</div>
+                </div>
+            </div>
+
+            <div data-aos="fade-left" data-aos-delay="150">
+                <div class="h-line"></div>
+                <h2 style="font-family:'Playfair Display',serif; font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:700; line-height:1.2; margin-bottom:1.5rem;">
+                    Todo evento de verdade <em style="color:var(--gold);font-style:italic;">merece existir</em> além da noite em que aconteceu.
+                </h2>
+                <p style="color:var(--muted); font-size:.98rem; margin-bottom:1.1rem;">O problema não é falta de fotógrafo. É a falta de quem entende como produzir conteúdo para as redes com narrativa, timing e qualidade real.</p>
+                <p style="color:var(--muted); font-size:.98rem;">Enquanto você está presente em cada abraço, a Storymaker garante que essas memórias cheguem com força onde as pessoas estão: no feed, nos stories, nas telas de quem importa.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="services">
+    <div class="container">
+        <div class="section-head" data-aos="fade-up">
+            <span class="eyebrow">O que fazemos</span>
+            <h2>Cobertura feita para quem<br>não abre mão de qualidade</h2>
+            <p>Cada evento tem sua linguagem. Nossa cobertura respeita isso.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card" data-aos="fade-up" data-aos-delay="0">
+                <span class="svc-num">01</span>
+                <h3>Casamentos</h3>
+                <p>Da preparação ao fim da festa, cada detalhe que fez você dizer sim merece ser mostrado com a elegância que o dia pediu.</p>
+                <ul class="svc-list">
+                    <li>Cobertura completa do dia</li>
+                    <li>Reels para Instagram e TikTok</li>
+                    <li>Stories em tempo real</li>
+                    <li>Entrega editada em até 48h</li>
+                </ul>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <span class="svc-num">02</span>
+                <h3>Festas de 15 anos</h3>
+                <p>A principal festa da vida dela precisa viver nas redes do jeito que ela sonhou: com vibração, emoção e conteúdo que os amigos vão querer rever.</p>
+                <ul class="svc-list">
+                    <li>Conteúdo para todas as redes</li>
+                    <li>Cortes cinematográficos</li>
+                    <li>Bastidores nos stories</li>
+                    <li>Galeria de fotos selecionadas</li>
+                </ul>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <span class="svc-num">03</span>
+                <h3>Eventos Corporativos</h3>
+                <p>Lançamentos, convenções, inaugurações. Seu brand merece cobertura que posiciona, não apenas registra. Conteúdo que comunica o que a empresa é.</p>
+                <ul class="svc-list">
+                    <li>Cobertura para LinkedIn e institucional</li>
+                    <li>Entrevistas e depoimentos</li>
+                    <li>Highlight para redes da empresa</li>
+                    <li>Entrega rápida pós-evento</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="process">
+    <div class="container">
+        <div class="section-head" data-aos="fade-up">
+            <span class="eyebrow">Como funciona</span>
+            <h2>Simples para você.<br>Impecável no resultado.</h2>
+        </div>
+        <div class="steps">
+            <div class="step" data-aos="fade-up" data-aos-delay="0">
+                <div class="step-num">01</div>
+                <h3>Você fala com a Thay</h3>
+                <p>Uma conversa rápida no WhatsApp para entender o seu evento, o que você espera e como quer que essas memórias vivam nas redes.</p>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="100">
+                <div class="step-num">02</div>
+                <h3>A gente planeja juntos</h3>
+                <p>Alinhamos o estilo visual, os momentos prioritários e a estratégia de conteúdo para cada plataforma onde você quer aparecer.</p>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-num">03</div>
+                <h3>Cobertura no dia</h3>
+                <p>Presente do início ao fim. Discreta o suficiente para não interferir, atenta o suficiente para não perder nada que importe.</p>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="300">
+                <div class="step-num">04</div>
+                <h3>Entrega em até 48h</h3>
+                <p>Conteúdo editado, otimizado para cada rede e pronto para postar enquanto o evento ainda está fresco na memória de todo mundo.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PORTFÓLIO -->
+<section id="portfolio">
+    <div class="container">
+        <div class="portfolio-intro">
+            <div data-aos="fade-right">
+                <span class="eyebrow">Portfólio</span>
+                <h2>Coberturas que <em>ficaram</em></h2>
+            </div>
+            <p data-aos="fade-left" data-aos-delay="100">
+                Cada cobertura abaixo começou com uma conversa no WhatsApp. Assista e sinta o que é ter seu evento com esse nível de atenção e cuidado.
+            </p>
+        </div>
+
+        <!-- 4 vídeos em formato retrato (9:16), sem barras pretas -->
+        <div class="video-portrait-grid" data-aos="fade-up">
+            <div class="video-portrait-item">
+                <iframe src="https://player.vimeo.com/video/1129041803?badge=0&autopause=0&title=0&byline=0&portrait=0&responsive=1"
+                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-portrait-item">
+                <iframe src="https://player.vimeo.com/video/1192395479?badge=0&autopause=0&title=0&byline=0&portrait=0&responsive=1"
+                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-portrait-item">
+                <iframe src="https://player.vimeo.com/video/1192403856?badge=0&autopause=0&title=0&byline=0&portrait=0&responsive=1"
+                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-portrait-item">
+                <iframe src="https://player.vimeo.com/video/1192404699?badge=0&autopause=0&title=0&byline=0&portrait=0&responsive=1"
+                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Galeria de fotos -->
+        <div class="photo-row" data-aos="fade-up" data-aos-delay="100">
+            <div class="photo-wrap"><img src="001.JPEG" alt="Evento Storymaker" loading="lazy"></div>
+            <div class="photo-wrap"><img src="002.JPEG" alt="Evento Storymaker" loading="lazy"></div>
+            <div class="photo-wrap"><img src="003.JPEG" alt="Evento Storymaker" loading="lazy"></div>
+            <div class="photo-wrap"><img src="004.JPEG" alt="Evento Storymaker" loading="lazy"></div>
+        </div>
+    </div>
+</section>
+
+<!-- QUEM É A THAY -->
+<section id="who">
+    <div class="container">
+        <div class="who-grid">
+            <div class="who-img-wrap" data-aos="fade-right">
+                <img src="003.JPEG" alt="Thay - Storymaker">
+            </div>
+            <div data-aos="fade-left" data-aos-delay="150">
+                <span class="who-text eyebrow">Quem está por trás</span>
+                <h2 class="who-text" style="font-family:'Playfair Display',serif; font-size:clamp(1.9rem,3vw,2.6rem); margin-bottom:1.5rem; margin-top:1.2rem;">
+                    Oi, eu sou a <em style="color:var(--gold); font-style:italic;">Thay</em>.
+                </h2>
+                <p class="who-text">Chego nos eventos antes dos convidados e saio depois que as luzes se apagam. Não porque é obrigação. Acredito que cada evento tem uma história que merece ser contada com intenção.</p>
+                <p class="who-text">A Storymaker nasceu da minha obsessão com qualidade e da crença de que memória boa é memória que você pode mostrar para o mundo com orgulho, sem filtros genéricos, sem conteúdo de segunda.</p>
+                <p class="who-text" style="margin-bottom:2.5rem;">Quando você me contrata, não está pagando por horas de cobertura. Está investindo para que o seu evento dure além daquela noite.</p>
+                <a href="https://wa.me/5548999808151" class="btn-primary" target="_blank" rel="noopener">Falar com a Thay</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEPOIMENTOS REAIS -->
+<section id="testimonials">
+    <div class="container">
+        <div class="section-head" data-aos="fade-up">
+            <span class="eyebrow">O que dizem</span>
+            <h2>Quem viveu, sabe</h2>
+            <p>Prints reais de clientes. Sem edição, sem roteiro.</p>
+        </div>
+        <div class="testi-screenshots">
+            <div class="testi-shot" data-aos="fade-up" data-aos-delay="0">
+                <img src="Depoimentos/1-1-scaled.jpg" alt="Depoimento Bianca Lentz" loading="lazy">
+            </div>
+            <div class="testi-shot" data-aos="fade-up" data-aos-delay="80">
+                <img src="Depoimentos/5-scaled.jpg" alt="Depoimento Adriana Candiotto" loading="lazy">
+            </div>
+            <div class="testi-shot" data-aos="fade-up" data-aos-delay="160">
+                <img src="Depoimentos/6-scaled.jpg" alt="Depoimento Fran Masiero" loading="lazy">
+            </div>
+            <div class="testi-shot" data-aos="fade-up" data-aos-delay="240">
+                <img src="Depoimentos/3-scaled.jpg" alt="Depoimento Aline" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+    <div class="cta-bg"></div>
+    <div class="cta-overlay"></div>
+    <div class="cta-content">
+        <span class="eyebrow" data-aos="fade-up">Próximo passo</span>
+        <h2 data-aos="fade-up" data-aos-delay="100">
+            Seu evento está chegando.<br>
+            <em>Não deixa ele desaparecer.</em>
+        </h2>
+        <p data-aos="fade-up" data-aos-delay="200">
+            Uma conversa de 10 minutos é suficiente para eu entender o que você precisa e montar a cobertura ideal para o seu dia.
+        </p>
+        <div data-aos="fade-up" data-aos-delay="300">
+            <a href="https://wa.me/5548999808151" class="btn-primary" target="_blank" rel="noopener"
+               style="font-size:.95rem; padding:1.1rem 2.8rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Quero minha cobertura
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-logo">Story<span>maker</span></div>
+            <div class="footer-links">
+                <a href="#services">Serviços</a>
+                <a href="#portfolio">Portfólio</a>
+                <a href="#who">A Thay</a>
+                <a href="https://wa.me/5548999808151" target="_blank" rel="noopener">WhatsApp</a>
+            </div>
+            <div class="footer-copy">© 2025 Storymaker. Todos os direitos reservados.</div>
+        </div>
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 780, easing: 'ease-out-quart', once: true, offset: 70 });
+
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 55);
+    }, { passive: true });
+
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('load', () => heroBg.classList.add('loaded'));
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY < window.innerHeight) {
+            heroBg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+        }
+    }, { passive: true });
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+        });
+    });
+</script>
+</body>
+</html>
