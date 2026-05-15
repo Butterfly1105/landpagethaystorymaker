@@ -236,16 +236,16 @@
             border-bottom: 1px solid var(--card-border);
         }
         .hook-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--card-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
             margin-bottom: 5rem;
         }
         .hook-stat {
-            background: var(--dark);
             text-align: center;
-            padding: 3rem 2.5rem;
+            max-width: 480px;
+            width: 100%;
         }
         .stat-number {
             font-family: 'Playfair Display', serif;
@@ -565,7 +565,7 @@
         }
 
         @media (max-width: 1024px) {
-            .hook-stats      { grid-template-columns: 1fr; }
+            .hook-stats      { gap: 2.5rem; }
             .services-grid   { grid-template-columns: 1fr 1fr; }
             .steps           { grid-template-columns: 1fr 1fr; }
             .step            { border-right: none; border-bottom: 1px solid var(--card-border); }
@@ -595,8 +595,7 @@
             .hero-cta      { gap: .75rem; }
             .btn-ghost     { display: none; }
 
-            .hook-stats    { grid-template-columns: repeat(3, 1fr); }
-            .hook-stat     { padding: 2rem 1.2rem; }
+            .hook-stats    { gap: 2rem; }
 
             .services-grid { grid-template-columns: 1fr; }
             .steps         { grid-template-columns: 1fr; }
