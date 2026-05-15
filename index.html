@@ -235,22 +235,33 @@
             border-top: 1px solid var(--card-border);
             border-bottom: 1px solid var(--card-border);
         }
-        .hook-grid {
+        .hook-stats {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 7rem;
-            align-items: center;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--card-border);
+            margin-bottom: 5rem;
         }
-        .stat-group { display: flex; flex-direction: column; gap: 3rem; }
+        .hook-stat {
+            background: var(--dark);
+            text-align: center;
+            padding: 3rem 2.5rem;
+        }
         .stat-number {
             font-family: 'Playfair Display', serif;
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: 900;
             color: var(--gold);
             line-height: 1;
-            margin-bottom: .35rem;
+            margin-bottom: .6rem;
         }
-        .stat-label { font-size: .86rem; color: var(--muted); max-width: 280px; }
+        .stat-label { font-size: .88rem; color: var(--muted); max-width: 240px; margin: 0 auto; line-height: 1.7; }
+        .hook-text {
+            text-align: center;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        .hook-text .h-line { margin: 0 auto 2rem; }
 
         /* SERVICES */
         .section-head {
@@ -554,7 +565,7 @@
         }
 
         @media (max-width: 1024px) {
-            .hook-grid       { grid-template-columns: 1fr; gap: 3.5rem; }
+            .hook-stats      { grid-template-columns: 1fr; }
             .services-grid   { grid-template-columns: 1fr 1fr; }
             .steps           { grid-template-columns: 1fr 1fr; }
             .step            { border-right: none; border-bottom: 1px solid var(--card-border); }
@@ -584,7 +595,8 @@
             .hero-cta      { gap: .75rem; }
             .btn-ghost     { display: none; }
 
-            .stat-group    { flex-direction: row; flex-wrap: wrap; gap: 2rem; }
+            .hook-stats    { grid-template-columns: repeat(3, 1fr); }
+            .hook-stat     { padding: 2rem 1.2rem; }
 
             .services-grid { grid-template-columns: 1fr; }
             .steps         { grid-template-columns: 1fr; }
@@ -663,30 +675,28 @@
 <!-- HOOK / PROBLEMA -->
 <section id="hook">
     <div class="container">
-        <div class="hook-grid">
-            <div class="stat-group" data-aos="fade-right">
-                <div>
-                    <div class="stat-number">72h</div>
-                    <div class="stat-label">é quanto um post tem de vida orgânica nas redes antes de sumir do alcance das pessoas</div>
-                </div>
-                <div>
-                    <div class="stat-number">90%</div>
-                    <div class="stat-label">dos convidados acessam fotos e vídeos pelo celular nas primeiras 24h após o evento</div>
-                </div>
-                <div>
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">memórias sobrevivem sem intenção. O que não é registrado direito, some.</div>
-                </div>
+        <div class="hook-stats" data-aos="fade-up">
+            <div class="hook-stat">
+                <div class="stat-number">72h</div>
+                <div class="stat-label">é quanto um post tem de vida orgânica nas redes antes de sumir do alcance das pessoas</div>
             </div>
+            <div class="hook-stat">
+                <div class="stat-number">90%</div>
+                <div class="stat-label">dos convidados acessam fotos e vídeos pelo celular nas primeiras 24h após o evento</div>
+            </div>
+            <div class="hook-stat">
+                <div class="stat-number">0</div>
+                <div class="stat-label">memórias sobrevivem sem intenção. O que não é registrado direito, some.</div>
+            </div>
+        </div>
 
-            <div data-aos="fade-left" data-aos-delay="150">
-                <div class="h-line"></div>
-                <h2 style="font-family:'Playfair Display',serif; font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:700; line-height:1.2; margin-bottom:1.5rem;">
-                    Todo evento de verdade <em style="color:var(--gold);font-style:italic;">merece existir</em> além da noite em que aconteceu.
-                </h2>
-                <p style="color:var(--muted); font-size:.98rem; margin-bottom:1.1rem;">O problema não é falta de fotógrafo. É a falta de quem entende como produzir conteúdo para as redes com narrativa, timing e qualidade real.</p>
-                <p style="color:var(--muted); font-size:.98rem;">Enquanto você está presente em cada abraço, a Storymaker garante que essas memórias cheguem com força onde as pessoas estão: no feed, nos stories, nas telas de quem importa.</p>
-            </div>
+        <div class="hook-text" data-aos="fade-up" data-aos-delay="150">
+            <div class="h-line"></div>
+            <h2 style="font-family:'Playfair Display',serif; font-size:clamp(1.9rem,3.2vw,2.7rem); font-weight:700; line-height:1.2; margin-bottom:1.5rem;">
+                Todo evento de verdade <em style="color:var(--gold);font-style:italic;">merece existir</em> além da noite em que aconteceu.
+            </h2>
+            <p style="color:var(--muted); font-size:.98rem; margin-bottom:1.1rem;">O problema não é falta de fotógrafo. É a falta de quem entende como produzir conteúdo para as redes com narrativa, timing e qualidade real.</p>
+            <p style="color:var(--muted); font-size:.98rem;">Enquanto você está presente em cada abraço, a Storymaker garante que essas memórias cheguem com força onde as pessoas estão: no feed, nos stories, nas telas de quem importa.</p>
         </div>
     </div>
 </section>
